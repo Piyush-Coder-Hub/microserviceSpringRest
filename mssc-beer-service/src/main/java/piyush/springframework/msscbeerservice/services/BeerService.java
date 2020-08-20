@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import piyush.springframework.msscbeerservice.web.model.BeerDto;
 
-public interface BeerSerice {
+public interface BeerService {
 
 	public BeerDto getBeerById(UUID id);
 

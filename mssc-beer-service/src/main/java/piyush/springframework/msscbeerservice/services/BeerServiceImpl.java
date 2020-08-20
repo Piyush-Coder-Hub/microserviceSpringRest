@@ -8,13 +8,13 @@ import piyush.springframework.msscbeerservice.web.model.BeerDto;
 import piyush.springframework.msscbeerservice.web.model.BeerStyleName;
 
 @Service
-public class BeerSericeImpl implements BeerSerice {
+public class BeerServiceImpl implements BeerService {
 
 	@Override
 	public BeerDto getBeerById(UUID id) {
 		return BeerDto.builder()
 				.beerName("CORONA")
-				.beerStyle(BeerStyleName.PILSNER)
+				.beerStyle(BeerStyleName.PILSNER.toString())
 				.build();
 	}
 
@@ -23,7 +23,7 @@ public class BeerSericeImpl implements BeerSerice {
 		return BeerDto.builder()
 				.id(UUID.randomUUID())
 				.beerName("CORONA")
-				.beerStyle(BeerStyleName.PILSNER)
+				.beerStyle(BeerStyleName.PILSNER.toString())
 				.build();
 	}
 
