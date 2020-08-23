@@ -22,7 +22,7 @@ jobs:
 
         steps:
             - checkout:
-				path:~/microserviceSpringRest
+                  path:~/microserviceSpringRest
 
             # Download and cache dependencies
             - restore_cache:
