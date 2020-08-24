@@ -4,7 +4,8 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Positive;
 
@@ -17,24 +18,32 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Valid
 public class BeerDto {
 
 	@Null
 	private UUID id;
 
+	@Null
 	private Integer version;
 
+	@Null
 	private OffsetDateTime createdDate;
+	@Null
 	private OffsetDateTime lastModifiedDate;
 
-	@NotBlank
+	@NotNull
 	private String beerName;
 
-	@NotBlank
+	@NotNull
 	private String beerStyle;
 
 	@Positive
+	@NotNull
 	private Long upc;
+
+	@Positive
+	@NotNull(message = "Price cannot be empty!")
 	private BigDecimal price;
 	private Integer quantityOnHand;
 

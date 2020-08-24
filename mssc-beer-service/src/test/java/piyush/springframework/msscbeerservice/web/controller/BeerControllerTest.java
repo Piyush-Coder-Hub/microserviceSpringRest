@@ -1,6 +1,8 @@
 package piyush.springframework.msscbeerservice.web.controller;
 
 import static org.hamcrest.core.Is.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -11,7 +13,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.math.BigDecimal;
+import java.util.Set;
 import java.util.UUID;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,13 +50,14 @@ class BeerControllerTest {
 
 	BeerDto validBeer;
 
+	private Validator validator;
+
 	@BeforeEach
 	public void setUp() {
-		validBeer = BeerDto.builder().id(UUID.randomUUID())
-									 .beerName("Beer1")
-									 .beerStyle(BeerStyleName.PORTER.toString())
-									 .upc(123456789012L)
-									 .build();
+		validBeer = BeerDto.builder().id(UUID.randomUUID()).beerName("Beer1").beerStyle(BeerStyleName.PORTER.toString())
+				.upc(123456789012L).build();
+		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+		validator = factory.getValidator();
 	}
 
 	@Test
@@ -65,10 +75,9 @@ class BeerControllerTest {
 		// given
 		BeerDto beerDto = validBeer;
 		beerDto.setId(null);
-		BeerDto savedDto = BeerDto.builder().id(UUID.randomUUID())
-											.beerName("New Beer")
-											.beerStyle(BeerStyleName.PORTER.toString())
-											.build();
+		beerDto.setPrice(new BigDecimal("12.90"));
+		BeerDto savedDto = BeerDto.builder().id(UUID.randomUUID()).beerName("New Beer")
+				.beerStyle(BeerStyleName.PORTER.toString()).build();
 		String beerDtoJson = objectMapper.writeValueAsString(beerDto);
 
 		given(beerService.saveNewBeer(any())).willReturn(savedDto);
@@ -93,4 +102,19 @@ class BeerControllerTest {
 		then(beerService).should().updateBeer(any(), any());
 
 	}
+
+	@Test
+	public void handleDtoPriceErrorValidation() throws Exception { 
+		BeerDto beerDto = validBeer;
+		beerDto.setId(null);
+		BeerDto savedDto = BeerDto.builder().id(UUID.randomUUID()).beerName("New Beer")
+				.beerStyle(BeerStyleName.PORTER.toString()).build();
+		given(beerService.saveNewBeer(any())).willReturn(savedDto);
+		Set<ConstraintViolation<BeerDto>> violations = validator.validate(beerDto);
+		assertTrue(violations.size() > 0);
+		assertEquals("Price cannot be empty!", violations.stream()
+				.filter(error -> error.getMessage().equals("Price cannot be empty!")).findFirst().get().getMessage());
+
+	}
+
 }
