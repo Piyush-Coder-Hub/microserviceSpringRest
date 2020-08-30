@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import lombok.extern.slf4j.Slf4j;
 import piyush.springframework.msscbeerservice.domain.Beer;
 import piyush.springframework.msscbeerservice.repositories.BeerRepository;
 
@@ -13,7 +14,7 @@ import piyush.springframework.msscbeerservice.repositories.BeerRepository;
  * @author Piyush
  *
  */
-
+@Slf4j
 @Component
 public class BeerLoader implements CommandLineRunner {
 
@@ -51,7 +52,7 @@ public class BeerLoader implements CommandLineRunner {
 						.build());
 			}
 			
-			System.out.println("Loaded Bears durng startup context load " +beerRepository.count());
+			log.debug("Loaded Bears durng startup context load " +beerRepository.count());
 	}
 	
 
