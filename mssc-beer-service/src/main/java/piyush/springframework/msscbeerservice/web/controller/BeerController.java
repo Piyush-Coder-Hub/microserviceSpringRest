@@ -5,7 +5,6 @@ import java.util.UUID;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,23 +32,24 @@ public class BeerController {
 	public ResponseEntity<BeerDto> getBeerById(@PathVariable UUID beerId) {
 
 		// return new ResponseEntity<BeerDto>(BeerDto.builder().build(), HttpStatus.OK);
-		return new ResponseEntity<BeerDto>(beerService.getBeerById(beerId), HttpStatus.OK);
+		return new ResponseEntity<>(beerService.getBeerById(beerId), HttpStatus.OK);
 
 	}
 
 	@PostMapping
 	public ResponseEntity saveNewBeer(@Valid @RequestBody BeerDto beerDto) {
-		BeerDto dto = beerService.saveNewBeer(beerDto);
-		HttpHeaders headers = new HttpHeaders();
-		headers.add("Location", "api/v1/beer/" + dto.getId().toString());
-		return new ResponseEntity(headers, HttpStatus.CREATED);
+		/*
+		 * BeerDto dto = beerService.saveNewBeer(beerDto); HttpHeaders headers = new
+		 * HttpHeaders(); headers.add("Location", "api/v1/beer/" +
+		 * dto.getId().toString());
+		 */
+		return new ResponseEntity(beerService.saveNewBeer(beerDto), HttpStatus.CREATED);
 
 	}
 
 	@PutMapping("/{beerId}")
 	public ResponseEntity updateBeerById(@Valid @PathVariable("beerId") UUID beerId, @RequestBody BeerDto beerDto) {
-		beerService.updateBeer(beerId, beerDto);
-		return new ResponseEntity(HttpStatus.NO_CONTENT);
+		return new ResponseEntity(beerService.updateBeer(beerId, beerDto), HttpStatus.NO_CONTENT);
 	}
 
 	@DeleteMapping("/{beerId}")
