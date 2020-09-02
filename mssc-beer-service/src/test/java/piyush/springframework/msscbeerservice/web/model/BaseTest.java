@@ -14,7 +14,7 @@ class BaseTest {
 				.createdDate(OffsetDateTime.now())
 				.lastModifiedDate(OffsetDateTime.now())
 				.price(new BigDecimal("12.99"))
-				.upc(12134455L)
+				.upc("12134455")
 				.build();
 	}
 

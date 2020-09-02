@@ -55,7 +55,7 @@ class BeerControllerTest {
 	@BeforeEach
 	public void setUp() {
 		validBeer = BeerDto.builder().id(UUID.randomUUID()).beerName("Beer1").beerStyle(BeerStyleName.PORTER.toString())
-				.upc(123456789012L).build();
+				.upc("123456789012").build();
 		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
 		validator = factory.getValidator();
 	}

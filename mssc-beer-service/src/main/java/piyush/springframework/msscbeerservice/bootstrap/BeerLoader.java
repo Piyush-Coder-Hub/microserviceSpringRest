@@ -18,8 +18,12 @@ import piyush.springframework.msscbeerservice.repositories.BeerRepository;
 @Component
 public class BeerLoader implements CommandLineRunner {
 
-	private final BeerRepository beerRepository;
+	public static final String BEER_1_UPC = "0631234200036";
+    public static final String BEER_2_UPC = "0631234300019";
+    public static final String BEER_3_UPC = "0083783375213";
 
+	private final BeerRepository beerRepository;
+	
 	public BeerLoader(BeerRepository beerRepository) {
 		this.beerRepository = beerRepository;
 	}
@@ -38,7 +42,7 @@ public class BeerLoader implements CommandLineRunner {
 						.beerStyle("IPA")
 						.minOnHand(12)
 						.quantityToBrew(200)
-						.upc(1261726572383L)
+						.upc(BEER_1_UPC)
 						.price(new BigDecimal("110.19"))
 						.build());
 				
@@ -47,8 +51,17 @@ public class BeerLoader implements CommandLineRunner {
 						.beerStyle("50% alocohol")
 						.minOnHand(12)
 						.quantityToBrew(200)
-						.upc(900023778239283L)
+						.upc(BEER_2_UPC)
 						.price(new BigDecimal("500.78"))
+						.build());
+				
+				beerRepository.save(Beer.builder()
+						.beerName("Corona")
+						.beerStyle("80% alocohol")
+						.minOnHand(9)
+						.quantityToBrew(500)
+						.upc(BEER_3_UPC)
+						.price(new BigDecimal("666"))
 						.build());
 			}
 			
