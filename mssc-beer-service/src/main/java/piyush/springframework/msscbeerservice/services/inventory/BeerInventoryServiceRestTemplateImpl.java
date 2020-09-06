@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -29,8 +30,8 @@ public class BeerInventoryServiceRestTemplateImpl implements BeerInventoryServic
 	@Setter
 	private String beerInventoryServiceHost;
 	
-	BeerInventoryServiceRestTemplateImpl(RestTemplate restTemplate){
-		this.restTemplate = restTemplate;
+	BeerInventoryServiceRestTemplateImpl(RestTemplateBuilder restTemplateBuilder){
+		this.restTemplate = restTemplateBuilder.build();
 	}
 
 	@Override
