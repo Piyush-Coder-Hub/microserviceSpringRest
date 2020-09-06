@@ -5,6 +5,7 @@ import java.util.UUID;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,25 +15,51 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import piyush.springframework.msscbeerservice.services.BeerService;
 import piyush.springframework.msscbeerservice.web.constants.ApiV1;
 import piyush.springframework.msscbeerservice.web.model.BeerDto;
+import piyush.springframework.msscbeerservice.web.model.BeerPageList;
+import piyush.springframework.msscbeerservice.web.model.BeerStyleName;
 
 @RequestMapping(ApiV1.BEERSERVICEPATHAPI)
 @RestController
 public class BeerController {
 
+	private static final Integer DEFAULT_PAGE_NUMBER = 0;
+	private static final Integer DEFAULT_PAGE_SIZE = 25;
+
 	@Autowired
 	public BeerService beerService;
 
+	@GetMapping(produces = { "application/json" })
+	public ResponseEntity<BeerPageList> listBeers(
+			@RequestParam(value = "pageNumber", required = false) Integer pageNumber,
+			@RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@RequestParam(value = "beerName", required = false) String beerName,
+			@RequestParam(value = "beerStyle", required = false) BeerStyleName beerStyle,
+			@RequestParam(value = "showInventoryOptions", required = false, defaultValue = "false") Boolean showInventoryOptions) {
+		if (pageNumber == null || pageNumber < 0) {
+			pageNumber = DEFAULT_PAGE_NUMBER;
+		}
+
+		if (pageSize == null || pageSize < 1) {
+			pageSize = DEFAULT_PAGE_SIZE;
+		}
+
+		BeerPageList beerList = beerService.listBeers(beerName, beerStyle, PageRequest.of(pageNumber, pageSize),showInventoryOptions);
+		return new ResponseEntity<>(beerList, HttpStatus.OK);
+
+	}
+
 	@GetMapping("/{beerId}")
-	public ResponseEntity<BeerDto> getBeerById(@PathVariable UUID beerId) {
+	public ResponseEntity<BeerDto> getBeerById(@PathVariable UUID beerId,@RequestParam(value = "showInventoryOptions", required = false, defaultValue = "false") Boolean showInventoryOptions) {
 
 		// return new ResponseEntity<BeerDto>(BeerDto.builder().build(), HttpStatus.OK);
-		return new ResponseEntity<>(beerService.getBeerById(beerId), HttpStatus.OK);
+		return new ResponseEntity<>(beerService.getBeerById(beerId,showInventoryOptions), HttpStatus.OK);
 
 	}
 

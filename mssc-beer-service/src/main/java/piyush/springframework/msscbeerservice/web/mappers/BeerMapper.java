@@ -1,5 +1,6 @@
 package piyush.springframework.msscbeerservice.web.mappers;
 
+import org.mapstruct.DecoratedWith;
 import org.mapstruct.Mapper;
 
 import piyush.springframework.msscbeerservice.domain.Beer;
@@ -12,10 +13,13 @@ import piyush.springframework.msscbeerservice.web.model.BeerDto;
  *
  */
 
-@Mapper(uses = DateMapper.class)
+@Mapper(componentModel = "spring", uses = DateMapper.class)
+@DecoratedWith(BeerMapperDecorator.class)
 public interface BeerMapper {
 
 	BeerDto beerToBeerDto(Beer beer);
+
+	BeerDto beerToBeerDtoWithInventory(Beer beer);
 
 	Beer beerDtoToBeer(BeerDto beerDto);
 
