@@ -25,7 +25,7 @@ import piyush.springframework.msscbeerservice.web.model.BeerDto;
 import piyush.springframework.msscbeerservice.web.model.BeerPageList;
 import piyush.springframework.msscbeerservice.web.model.BeerStyleName;
 
-@RequestMapping(ApiV1.BEERSERVICEPATHAPI)
+@RequestMapping(ApiV1.BASEPATHAPI)
 @RestController
 public class BeerController {
 
@@ -35,7 +35,7 @@ public class BeerController {
 	@Autowired
 	public BeerService beerService;
 
-	@GetMapping(produces = { "application/json" })
+	@GetMapping(produces = { "application/json" },path = "/beer")
 	public ResponseEntity<BeerPageList> listBeers(
 			@RequestParam(value = "pageNumber", required = false) Integer pageNumber,
 			@RequestParam(value = "pageSize", required = false) Integer pageSize,
@@ -55,15 +55,23 @@ public class BeerController {
 
 	}
 
-	@GetMapping("/{beerId}")
+	@GetMapping("beer/{beerId}")
 	public ResponseEntity<BeerDto> getBeerById(@PathVariable UUID beerId,@RequestParam(value = "showInventoryOptions", required = false, defaultValue = "false") Boolean showInventoryOptions) {
 
 		// return new ResponseEntity<BeerDto>(BeerDto.builder().build(), HttpStatus.OK);
 		return new ResponseEntity<>(beerService.getBeerById(beerId,showInventoryOptions), HttpStatus.OK);
 
 	}
+	
+	@GetMapping("beerUpc/{upc}")
+	public ResponseEntity<BeerDto> getBeerByUpc(@PathVariable String upc) {
 
-	@PostMapping
+		// return new ResponseEntity<BeerDto>(BeerDto.builder().build(), HttpStatus.OK);
+		return new ResponseEntity<>(beerService.getBeerByUpc(upc), HttpStatus.OK);
+
+	}
+
+	@PostMapping(path = "/beer")
 	public ResponseEntity saveNewBeer(@Valid @RequestBody BeerDto beerDto) {
 		/*
 		 * BeerDto dto = beerService.saveNewBeer(beerDto); HttpHeaders headers = new
@@ -74,12 +82,12 @@ public class BeerController {
 
 	}
 
-	@PutMapping("/{beerId}")
+	@PutMapping("beer/{beerId}")
 	public ResponseEntity updateBeerById(@Valid @PathVariable("beerId") UUID beerId, @RequestBody BeerDto beerDto) {
 		return new ResponseEntity(beerService.updateBeer(beerId, beerDto), HttpStatus.NO_CONTENT);
 	}
 
-	@DeleteMapping("/{beerId}")
+	@DeleteMapping("beer/{beerId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deleteBeerById(@PathVariable("beerId") UUID beerId) {
 		beerService.deleteBeerById(beerId);

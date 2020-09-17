@@ -1,7 +1,6 @@
 package piyush.springframework.msscbeerservice.bootstrap;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;

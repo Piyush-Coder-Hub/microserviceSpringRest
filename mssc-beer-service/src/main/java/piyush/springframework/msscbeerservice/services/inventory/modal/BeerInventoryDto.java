@@ -1,12 +1,12 @@
 package piyush.springframework.msscbeerservice.services.inventory.modal;
 
+import java.time.OffsetDateTime;
+import java.util.UUID;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.OffsetDateTime;
-import java.util.UUID;
 
 /**
  * Created by jt on 2019-05-31.
