@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +18,12 @@ import lombok.extern.slf4j.Slf4j;
 import piyush.springframework.msscbeerservice.services.inventory.modal.BeerInventoryDto;
 
 @Slf4j
+@Profile("!local-discovery")
 @ConfigurationProperties(prefix = "sfg.brewery", ignoreUnknownFields = false)
 @Component
 public class BeerInventoryServiceRestTemplateImpl implements BeerInventoryService {
 
-	private final String INVENTORY_PATH = "api/v1/beer/{beerId}/inventory";
+	public final static String INVENTORY_PATH = "api/v1/beer/{beerId}/inventory";
 	
 	//@Autowired
 	private final  RestTemplate restTemplate;
