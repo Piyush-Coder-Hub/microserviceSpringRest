@@ -8,9 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import piyush.springframework.msscbeerservice.config.FeignClientConfig;
 import piyush.springframework.msscbeerservice.services.inventory.modal.BeerInventoryDto;
 
-@FeignClient(name = "beer-inventory-service", fallback = InventoryServiceFeignClientFailover.class)
+@FeignClient(name = "beer-inventory-service", fallback = InventoryServiceFeignClientFailover.class, configuration = FeignClientConfig.class)
 public interface InventoryServiceFeignClient {
 
 	@GetMapping(value = BeerInventoryServiceRestTemplateImpl.INVENTORY_PATH)
