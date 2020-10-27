@@ -6,6 +6,12 @@ import org.springframework.context.annotation.Configuration;
 
 import feign.auth.BasicAuthRequestInterceptor;
 
+/**
+ * Config for Intercepting & basic auth secure every request from feign client
+ * 
+ * @author Piyush
+ *
+ */
 @Configuration
 public class FeignClientConfig {
 
